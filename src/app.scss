@@ -1,0 +1,10 @@
+$color-brand: #34323c;
+$color-text-base: #ddc5ab;
+
+@import "~taro-ui/dist/style/index.scss";
+
+.page {
+    display: flex;
+    flex-direction: column;
+    background-color: $color-brand;
+}

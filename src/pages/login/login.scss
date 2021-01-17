@@ -1,0 +1,19 @@
+.login {
+    padding: 0 48px 0 48px;
+    height: 100vh;
+    .group {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        .logo {
+            height: 480px;
+            width: 640px;
+        }
+    }
+    .login-button {
+        margin: 0;
+        margin-bottom: 240px;
+        // border-color: #ddc5ab;
+    }
+}

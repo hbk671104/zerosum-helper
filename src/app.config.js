@@ -1,11 +1,13 @@
 export default {
   pages: [
-    'pages/index/index'
+    'pages/launcher/launcher',
+    'pages/login/login',
+    'pages/index/index',
   ],
   window: {
-    backgroundTextStyle: 'light',
-    navigationBarBackgroundColor: '#fff',
-    navigationBarTitleText: 'WeChat',
-    navigationBarTextStyle: 'black'
+    backgroundTextStyle: 'dark',
+    navigationBarBackgroundColor: '#34323c',
+    navigationBarTitleText: '零和助手',
+    navigationBarTextStyle: 'white'
   }
 }
