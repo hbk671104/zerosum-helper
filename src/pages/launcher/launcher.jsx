@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import Taro from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
 import { AtActivityIndicator } from 'taro-ui'
+import AV from 'leancloud-storage/dist/av-weapp.js'
 
 import './launcher.scss'
 
@@ -10,9 +11,11 @@ export default class Launcher extends Component {
   componentWillMount() { }
 
   componentDidMount() {
-    setTimeout(() => {
+    if (AV.User.current()) {
+      Taro.reLaunch({ url: '../index/index' })
+    } else {
       Taro.redirectTo({ url: '../login/login' })
-    }, 1000)
+    }
   }
 
   componentWillUnmount() { }
