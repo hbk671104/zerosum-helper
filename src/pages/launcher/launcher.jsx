@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Taro from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
 import { AtActivityIndicator } from 'taro-ui'
-import AV from 'leancloud-storage/dist/av-weapp.js'
+import AV from 'leancloud-storage/dist/av-live-query-weapp.js'
 
 import './launcher.scss'
 

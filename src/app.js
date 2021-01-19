@@ -1,7 +1,6 @@
 import { Component } from 'react'
 import './app.scss'
-import AV from 'leancloud-storage/dist/av-weapp.js';
-// import AV from 'leancloud-storage/dist/av-live-query-weapp.js'
+import AV from 'leancloud-storage/dist/av-live-query-weapp.js'
 
 class App extends Component {
 

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Taro from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
-import AV from 'leancloud-storage/dist/av-weapp.js';
+import AV from 'leancloud-storage/dist/av-live-query-weapp.js'
 
 import './login.scss'
 
@@ -26,6 +26,7 @@ export default class Login extends Component {
   }
 
   onGetUserInfo = async ({ detail }) => {
+    Taro.showLoading({ title: '正在登录...' })
     try {
       const { code } = await Taro.login()
       const authData = await AV.Cloud.run("loginWechat", { code })
@@ -47,6 +48,8 @@ export default class Login extends Component {
       }
     } catch (error) {
       console.error(error)
+    } finally {
+      Taro.hideLoading()
     }
   }
 
