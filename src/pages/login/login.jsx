@@ -4,6 +4,7 @@ import { View, Image } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import AV from 'leancloud-storage/dist/av-live-query-weapp.js'
 
+import { multiSet } from '../../utils/index'
 import './login.scss'
 
 export default class Login extends Component {
@@ -18,34 +19,18 @@ export default class Login extends Component {
 
   componentDidHide() { }
 
-  setUserInfo = (user, info) => {
-    Object.keys(info).forEach(key => {
-      user.set(key, info[key])
-    })
-    return user
-  }
-
   onGetUserInfo = async ({ detail }) => {
     Taro.showLoading({ title: '正在登录...' })
     try {
-      const { code } = await Taro.login()
-      const authData = await AV.Cloud.run("loginWechat", { code })
-      if (authData) {
-        let user = await AV.User.loginWithAuthData({
-          openid: authData.openid,
-          access_token: authData.session_key,
-          expires_in: 7200,
-        }, 'weapp')
-        if (user) {
-          const { userInfo } = detail
-          console.log(userInfo)
-          user = this.setUserInfo(user, userInfo)
-          user = await user.save()
-          if (user) {
-            Taro.reLaunch({ url: '../index/index' })
-          }
-        }
-      }
+      let user = await AV.User.loginWithMiniApp()
+
+      // set user info
+      const { userInfo } = detail
+      user = multiSet(user, userInfo)
+      user = await user.save()
+
+      // jump to index page
+      Taro.reLaunch({ url: '../index/index' })
     } catch (error) {
       console.error(error)
     } finally {
