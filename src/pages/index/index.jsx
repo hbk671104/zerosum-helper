@@ -2,10 +2,8 @@ import React, { Component } from 'react'
 import Taro from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
-import AV from 'leancloud-storage/dist/av-weapp.js'
-// import AV from 'leancloud-storage/dist/av-live-query-weapp.js'
+import AV from 'leancloud-storage/dist/av-live-query-weapp.js'
 
-import { generateRoomNumber } from '../../utils/index'
 import './index.scss'
 
 export default class Index extends Component {
@@ -27,23 +25,31 @@ export default class Index extends Component {
     this.createRoom()
   }
 
+  onRoomJoinClick = e => {
+    e.stopPropagation()
+    // this.joinRoom()
+  }
+
   createRoom = async () => {
-    const room = new AV.Object('Room')
+    let room = new AV.Object('Room')
     const user = AV.User.current()
-    const roomNumber = generateRoomNumber()
     room.set('owner', user)
-    room.set('player', {
+    room.set('score', {
       [user.get('objectId')]: 0
     })
-    room.set('roomNumber', roomNumber)
-    await room.save()
 
-    // const query = new LQ.Query('Room');
-    // query.equalTo('roomNumber', roomNumber);
-    // query.subscribe().then((liveQuery) => {
-    //   // 订阅成功
-    //   console.log(liveQuery);
-    // });
+    Taro.showLoading('正在创建房间...')
+    try {
+      room = await room.save()
+      const roomId = room.get('objectId')
+      Taro.redirectTo({
+        url: `../gameroom/gameroom?roomId=${roomId}`
+      })
+    } catch (error) {
+      console.error(error)
+    } finally {
+      Taro.hideLoading()
+    }
   }
 
   render() {
@@ -56,7 +62,7 @@ export default class Index extends Component {
           <AtButton className='create-room' onClick={this.onRoomCreateClick}>
             创建房间
           </AtButton>
-          <AtButton>
+          <AtButton onClick={this.onRoomJoinClick}>
             加入房间
           </AtButton>
         </View>

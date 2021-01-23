@@ -3,6 +3,7 @@ export default {
     'pages/launcher/launcher',
     'pages/login/login',
     'pages/index/index',
+    'pages/gameroom/gameroom'
   ],
   window: {
     backgroundTextStyle: 'dark',

@@ -6,5 +6,6 @@ $color-text-base: #ddc5ab;
 .page {
     display: flex;
     flex-direction: column;
-    background-color: $color-brand;
+    background: $color-brand;
+    min-height: 100vh;
 }
