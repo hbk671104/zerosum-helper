@@ -38,7 +38,7 @@ export default class Index extends Component {
       [user.get('objectId')]: 0
     })
 
-    Taro.showLoading('正在创建房间...')
+    Taro.showLoading({ title: '正在创建房间...' })
     try {
       room = await room.save()
       const roomId = room.get('objectId')

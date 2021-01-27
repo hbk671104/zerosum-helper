@@ -1,3 +1,14 @@
 .gameroom {
-    min-height: 100vh
+    .menu {
+        position: fixed;
+        right: 24px;
+        bottom: 180px;
+    }
+    .drawer {
+        justify-content: flex-end;
+        padding: 0px 48px 0px 48px;
+        .group {
+            margin-bottom: 120px;
+        }
+    }
 }

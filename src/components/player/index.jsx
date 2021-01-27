@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { View, Text } from '@tarojs/components'
-import { AtButton } from 'taro-ui'
+import { View, Text, Image } from '@tarojs/components'
+import { AtButton, AtAvatar } from 'taro-ui'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import AV from 'leancloud-storage/dist/av-live-query-weapp.js'
 
@@ -40,9 +40,18 @@ export default class Player extends Component {
 
   render() {
     const { nickName, avatarUrl } = this.state
+    const { score, onPlusClick } = this.props
     return (
       <View className='player'>
-        <Text>{nickName}</Text>
+        <AtAvatar image={avatarUrl} text={nickName} size='large' />
+        <View className='score-container'>
+          <Text className='score'>
+            {score}
+          </Text>
+        </View>
+        <View className='plus-container' onClick={onPlusClick}>
+          <Image className='plus' src={require('../../assets/plus.png')} />
+        </View>
       </View>
     )
   }
