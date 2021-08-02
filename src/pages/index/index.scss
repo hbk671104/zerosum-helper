@@ -1,19 +1,19 @@
 .index {
-    padding: 0 48px 0 48px;
-    .group {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        .logo {
-            height: 480px;
-            width: 640px;
-        }
+  padding: 0 48px 0 48px;
+  .group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .logo {
+      height: 480px;
+      width: 640px;
     }
-    .button-group {
-        margin-bottom: 240px;
-        .create-room {
-            margin-bottom: 60px;
-        }
+  }
+  .button-group {
+    margin-bottom: 240px;
+    .button {
+      margin-top: 36px;
     }
+  }
 }

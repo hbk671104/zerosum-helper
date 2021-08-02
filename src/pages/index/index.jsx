@@ -56,10 +56,10 @@ export default class Index extends Component {
           <Image className="logo" src={require("../../assets/logo.png")} />
         </View>
         <View className="button-group">
-          <AtButton className="create-room" onClick={this.onRoomCreateClick}>
-            创建房间
+          <AtButton onClick={this.onRoomCreateClick}>创建房间</AtButton>
+          <AtButton className="button" onClick={this.onRoomJoinClick}>
+            对战记录
           </AtButton>
-          <AtButton onClick={this.onRoomJoinClick}>加入房间</AtButton>
         </View>
       </View>
     );

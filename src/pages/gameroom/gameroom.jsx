@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { View, Text } from "@tarojs/components";
-import { AtFab, AtActionSheet, AtActionSheetItem } from "taro-ui";
+import { View, Text, Button } from "@tarojs/components";
+import { AtFab, AtActionSheet, AtActionSheetItem, AtButton } from "taro-ui";
 import Taro, { getCurrentInstance } from "@tarojs/taro";
 import AV from "leancloud-storage/dist/av-live-query-weapp.js";
 
@@ -8,16 +8,20 @@ import Player from "../../components/player";
 import "./gameroom.scss";
 
 export default class Gameroom extends Component {
-  state = {
-    score: null,
-    showActionSheet: false
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      score: {},
+      showActionSheet: false
+    };
+    this.roomId = getCurrentInstance().router.params.roomId;
+    this.currentUser = AV.User.current().toJSON();
+  }
 
   componentWillMount() {
-    if (!AV.User.current()) {
-      const { roomId } = getCurrentInstance().router.params;
+    if (!this.currentUser) {
       Taro.redirectTo({
-        url: `../login/login?roomId=${roomId}`
+        url: `../login/login?roomId=${this.roomId}`
       });
     }
   }
@@ -35,11 +39,11 @@ export default class Gameroom extends Component {
 
   componentDidHide() {}
 
-  onShareAppMessage(options) {
-    const { roomId } = getCurrentInstance().router.params;
+  onShareAppMessage() {
+    const { nickName } = this.currentUser;
     return {
-      title: "房间已开，快来加入！",
-      path: `pages/gameroom/gameroom?roomId=${roomId}`
+      title: `${nickName}邀请你加入房间，还不快来！`,
+      path: `pages/gameroom/gameroom?roomId=${this.roomId}`
     };
   }
 
@@ -58,12 +62,11 @@ export default class Gameroom extends Component {
   };
 
   fetch = async () => {
-    const { roomId } = getCurrentInstance().router.params;
-    const query = new AV.Query("Room").equalTo("objectId", roomId);
+    const query = new AV.Query("Room").equalTo("objectId", this.roomId);
 
     Taro.showNavigationBarLoading();
     try {
-      const { score } = (await query.get(roomId)).toJSON();
+      const { score } = (await query.get(this.roomId)).toJSON();
       this.setState({
         score
       });
@@ -75,8 +78,7 @@ export default class Gameroom extends Component {
   };
 
   subscribe = async () => {
-    const { roomId } = getCurrentInstance().router.params;
-    const query = new AV.Query("Room").equalTo("objectId", roomId);
+    const query = new AV.Query("Room").equalTo("objectId", this.roomId);
 
     try {
       const liveQuery = await query.subscribe();
@@ -89,9 +91,8 @@ export default class Gameroom extends Component {
   };
 
   closeRoom = async () => {
-    const { roomId } = getCurrentInstance().router.params;
-    const room = AV.Object.createWithoutData("Room", roomId);
-    room.set("status", "closed");
+    const room = AV.Object.createWithoutData("Room", this.roomId);
+    room.set("isOpen", false);
 
     Taro.showLoading({
       title: "正在关闭房间..."
@@ -132,7 +133,11 @@ export default class Gameroom extends Component {
           cancelText="取消"
           onClose={() => this.setState({ showActionSheet: false })}
         >
-          <AtActionSheetItem>邀请玩家</AtActionSheetItem>
+          <AtActionSheetItem className="share-item">
+            <AtButton className="share-button" openType="share">
+              邀请玩家
+            </AtButton>
+          </AtActionSheetItem>
           <AtActionSheetItem>账单记录</AtActionSheetItem>
           <AtActionSheetItem onClick={this.onCloseRoomButtonClick}>
             <Text style="color:red;">关闭房间</Text>

@@ -4,4 +4,12 @@
     right: 24px;
     bottom: 180px;
   }
+  .share-item {
+    padding: 6px 0 6px 0;
+    .share-button {
+      border: none;
+      color: black;
+      font-size: 36px;
+    }
+  }
 }
