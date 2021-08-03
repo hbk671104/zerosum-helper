@@ -111,11 +111,13 @@ export default class Gameroom extends Component {
 
   render() {
     const { score, showActionSheet } = this.state;
+    const { objectId } = this.currentUser;
     return (
       <View className="page gameroom">
         {!!score &&
           Object.keys(score).map(p => (
             <Player
+              self={objectId === p}
               key={p}
               id={p}
               score={score[p]}
