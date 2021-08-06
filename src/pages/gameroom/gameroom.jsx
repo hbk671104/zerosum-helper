@@ -83,7 +83,12 @@ export default class Gameroom extends Component {
     try {
       const liveQuery = await query.subscribe();
       liveQuery.on("update", (room, keys) => {
-        console.log(room.toJSON(), keys);
+        if (keys.includes("score")) {
+          const { score } = room.toJSON();
+          this.setState({
+            score
+          });
+        }
       });
     } catch (error) {
       console.error(error);
@@ -114,16 +119,18 @@ export default class Gameroom extends Component {
     const { objectId } = this.currentUser;
     return (
       <View className="page gameroom">
+        <Player self id={objectId} score={score[objectId]} />
         {!!score &&
-          Object.keys(score).map(p => (
-            <Player
-              self={objectId === p}
-              key={p}
-              id={p}
-              score={score[p]}
-              onPlusClick={this.onPlusClick(p)}
-            />
-          ))}
+          Object.keys(score)
+            .filter(pid => pid !== objectId)
+            .map(pid => (
+              <Player
+                key={pid}
+                id={pid}
+                score={score[pid]}
+                onPlusClick={this.onPlusClick(pid)}
+              />
+            ))}
         <AtFab
           className="menu"
           onClick={() => this.setState({ showActionSheet: true })}
